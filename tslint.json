@@ -11,6 +11,6 @@
             "jsx-double"
         ],
         "ter-indent": [true, 4],
-        "jsx-wrap-multiline": true
+        "jsx-no-lambda": false
     }
 }
