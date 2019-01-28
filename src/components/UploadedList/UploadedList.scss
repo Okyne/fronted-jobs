@@ -1,0 +1,18 @@
+.uploadedlist {
+    margin: 20px;
+    width: 200px;
+
+    tr {
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+
+        &:first-child {
+            background-color: #d0cdcd;
+        }
+
+        th {
+            font-weight: bold;
+        }
+    }
+}

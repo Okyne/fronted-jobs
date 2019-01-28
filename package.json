@@ -1,0 +1,44 @@
+{
+  "name": "frontend-jobs",
+  "version": "1.0.0",
+  "description": "Looking for a job? Check out our [open positions](https://www.welcometothejungle.co/companies/lifen/jobs).",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --hot",
+    "prod": "cross-env NODE_ENV=production webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/honestica/frontend-jobs.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/honestica/frontend-jobs/issues"
+  },
+  "homepage": "https://github.com/honestica/frontend-jobs#readme",
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "css-loader": "^2.1.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "ts-lint": "^4.5.1",
+    "ts-loader": "^5.3.3",
+    "tslint": "^5.12.1",
+    "tslint-config-standard": "^8.0.1",
+    "tslint-loader": "^3.5.4",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.2.4",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "@types/react": "^16.7.21",
+    "@types/react-dom": "^16.0.11",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  }
+}

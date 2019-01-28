@@ -1,0 +1,16 @@
+{
+    "extends": [
+        "tslint-config-standard",
+        "tslint-react"
+    ],
+    "rules": {
+        "quotemark": [
+            true,
+            "single",
+            "avoid-escape",
+            "jsx-double"
+        ],
+        "ter-indent": [true, 4],
+        "jsx-wrap-multiline": true
+    }
+}

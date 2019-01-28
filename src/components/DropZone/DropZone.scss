@@ -1,0 +1,26 @@
+section {
+    display: flex;
+    flex-direction: column;
+    
+    .dropzone {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-self: center;
+        background: #FFF;
+        border: 2px #afafaf dashed;
+        padding: 20px;
+        width: 200px;
+        height: 200px;
+        margin: 20px;
+    
+        p {
+           align-self: center;
+           color: grey;
+           text-align: center;
+        }
+        input[type=file] {
+            display: none;
+        }
+    }
+}
