@@ -11,6 +11,16 @@
             background-color: #d0cdcd;
         }
 
+        &:last-child {
+            height: 50px;
+            line-height: 50px;
+            font-weight: bold;
+            border-top: 1px #e2e2e2 solid;
+            td:first-child {
+                text-align: right;
+            }
+        }
+
         th {
             font-weight: bold;
         }
