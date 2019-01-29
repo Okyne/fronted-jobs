@@ -15,6 +15,9 @@ module.exports = {
         noInfo: true,
         port: 8080
     },
+    node: {
+        fs: 'empty'
+    },
     module: {
         rules: [
             {
