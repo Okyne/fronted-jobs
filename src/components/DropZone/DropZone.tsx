@@ -77,7 +77,6 @@ export default class DropZone extends React.Component<{}, State> {
                 const stats = fs.statSync(file.indexOf('/FHIR') !== -1 ? file : `${this.homePath}/${this.fhirPath}/${file}`)
                 return regex.test(file) && stats.size <= 2000000
             })
-            console.log(acceptedFiles)
             if (acceptedFiles.length) {
                 const fileArray: File[] = []
                 _.each(acceptedFiles, (file) => {

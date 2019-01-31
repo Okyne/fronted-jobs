@@ -14,18 +14,25 @@
         p {
             line-height: 20px;
 
-            &:last-child {
+            + p {
                 color: #f75e36;
                 font-size: 0.8rem;
             }
+        }
+
+        button {
+            background: none;
+            color: inherit;
+            border: 1px red solid;
+            border-radius: 3px;
         }
         
         &.row-empty {
             justify-content: center;
             background: #e0e0e0;
             text-align: center;
-            
-             p:last-child {
+
+             + p {
                 color: #000;
                 font-size: 1rem;
              }
@@ -37,7 +44,7 @@
             p {
                 color: #000;
     
-                &:last-child {
+                + p {
                     font-size: 1rem;
                     font-weight: bold;
                 }

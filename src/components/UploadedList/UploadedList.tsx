@@ -29,7 +29,7 @@ export default class UploadedList extends React.Component<Props, State> {
         if (nextProps.list && nextProps.list.length && prevState.list.length !== nextProps.list.length) {
             const newList: any[] = []
             _.each(nextProps.list, () => {
-                newList.push({ isSent: false })
+                newList.push({ id: null, deleted: false })
             })
             return { list: newList }
         } else {
@@ -43,6 +43,24 @@ export default class UploadedList extends React.Component<Props, State> {
                 this.uploadFile(file, index)
             })
         }
+    }
+
+    deleteBinary (index: number) {
+        const promise = new Promise((resolve, reject) => {
+            axios.delete(`${baseUrl}Binary/${this.state.list[index].id}?_format=json`)
+            .then((response: any) => {
+                this.setState(() => {
+                    const updatedList = _.clone(this.state.list)
+                    updatedList[index] = { id: null, deleted: true }
+                    return { list: updatedList }
+                })
+                this.getBinaryCount()
+                resolve(response.data.id)
+            }).catch((error: any) => {
+                reject(error)
+            })
+        })
+        return promise
     }
 
     getBinaryCount () {
@@ -70,10 +88,10 @@ export default class UploadedList extends React.Component<Props, State> {
     renderRow () {
         if (this.props.list) {
             return this.props.list.map((file: File, index: number) => {
-                return <div className="row" key={index}><p>{file.name}</p><p>{this.renderRowStatus(index)}</p></div>
+                if (!this.state.list[index].deleted) {
+                    return <div className="row" key={index}><p>{file.name}</p>{this.renderRowStatus(index)}{this.renderRowDelete(index)}</div>
+                }
             })
-        } else {
-            return <div className="row row-empty"><p>No file</p></div>
         }
     }
 
@@ -90,11 +108,21 @@ export default class UploadedList extends React.Component<Props, State> {
         }
     }
 
+    renderRowDelete (index: number) {
+        if (!this.state.list[index].deleted) {
+            return (
+                <button onClick={() => this.deleteBinary(index)}>Cancel</button>
+            )
+        }
+    }
+
     renderRowStatus (index: number) {
         return (
-            <span>
-                {this.state.list[index].isSent ? 'Uploaded' : 'In progress'}
-            </span>
+            <p>
+                <span>
+                    {this.state.list[index].id ? 'Uploaded' : 'In progress'}
+                </span>
+            </p>
         )
     }
 
@@ -112,7 +140,7 @@ export default class UploadedList extends React.Component<Props, State> {
             .then((response) => {
                 this.setState(() => {
                     const updatedList = _.clone(this.state.list)
-                    updatedList[index] = { isSent: true }
+                    updatedList[index] = { id: response.data.id }
                     return { list: updatedList }
                 })
                 this.getBinaryCount()
