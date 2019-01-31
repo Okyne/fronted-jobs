@@ -1,23 +1,32 @@
 section {
     display: flex;
     flex-direction: column;
+    background: #f3f3f3;
     
     .dropzone {
         display: flex;
         justify-content: center;
         align-content: center;
         align-self: center;
-        background: #FFF;
-        border: 2px #afafaf dashed;
+        background: #ff6742; /* Old browsers */
+        background: -moz-radial-gradient(center, ellipse cover, #ff6742 0%, #d33800 100%); /* FF3.6-15 */
+        background: -webkit-radial-gradient(center, ellipse cover, #ff6742 0%,#d33800 100%); /* Chrome10-25,Safari5.1-6 */
+        background: radial-gradient(ellipse at center, #ff6742 0%,#d33800 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff6742', endColorstr='#d33800',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+        border: 2px #FFF dashed;
         padding: 20px;
-        width: 90vw;
+        width: calc(100vw - 40px);
         height: 200px;
         margin: 20px;
+        border-radius: 10px;
     
         p {
            align-self: center;
-           color: grey;
+           color: #FFF;
            text-align: center;
+           strong {
+               font-weight: bold;
+           }
         }
         input[type=file] {
             display: none;

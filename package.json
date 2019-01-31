@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --mode development --hot",
-    "nw": "npm run prod && nw ./",
+    "nw": "npm run prod && nw ./ --remote-debugging-port=9222",
     "prod": "cross-env NODE_ENV=production webpack"
   },
   "repository": {
@@ -20,13 +20,16 @@
   },
   "homepage": "https://github.com/honestica/frontend-jobs#readme",
   "devDependencies": {
+    "@types/chokidar": "^1.7.5",
+    "@types/node": "^10.12.19",
     "@types/react": "^16.7.21",
     "@types/react-dom": "^16.0.11",
     "@types/underscore": "^1.8.9",
+    "chokidar": "^2.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "node-sass": "^4.11.0",
-    "nw": "^0.35.5",
+    "nw": "^0.35.5-sdk",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "ts-lint": "^4.5.1",
@@ -46,8 +49,10 @@
     "react-dom": "^16.7.0",
     "underscore": "^1.9.1"
   },
-  "window":{
-    "min_width":600,
-    "min_height":400
+  "window": {
+    "min_width": 400,
+    "min_height": 600,
+    "toolbar": false,
+    "icon": "src/assets/img/cropped-logoorange-32x32.jpg"
   }
 }

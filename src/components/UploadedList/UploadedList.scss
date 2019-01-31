@@ -1,28 +1,49 @@
 .uploadedlist {
     margin: 20px;
-    width: 90vw;
+    width: calc(100vw - 40px);
 
-    tr {
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
+    .row {
+        background: #383737;
+        border-radius: 10px;
+        padding: 10px;
+        color: #FFF;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
 
-        &:first-child {
-            background-color: #d0cdcd;
-        }
+        p {
+            line-height: 20px;
 
-        &:last-child {
-            height: 50px;
-            line-height: 50px;
-            font-weight: bold;
-            border-top: 1px #e2e2e2 solid;
-            td:first-child {
-                text-align: right;
+            &:last-child {
+                color: #f75e36;
+                font-size: 0.8rem;
             }
         }
+        
+        &.row-empty {
+            justify-content: center;
+            background: #e0e0e0;
+            text-align: center;
+            
+             p:last-child {
+                color: #000;
+                font-size: 1rem;
+             }
+        }
 
-        th {
-            font-weight: bold;
+        &.row-end {
+            background: none;
+
+            p {
+                color: #000;
+    
+                &:last-child {
+                    font-size: 1rem;
+                    font-weight: bold;
+                }
+            }
         }
     }
+
+
 }

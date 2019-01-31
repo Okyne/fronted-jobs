@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry: './src/main.tsx',
+    target: 'node',
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.js',
@@ -14,9 +15,6 @@ module.exports = {
     devServer: {
         noInfo: true,
         port: 8080
-    },
-    node: {
-        fs: 'empty'
     },
     module: {
         rules: [

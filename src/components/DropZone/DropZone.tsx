@@ -1,13 +1,18 @@
+import * as chokidar from 'chokidar'
+import * as fs from 'fs'
 import * as React from 'react'
+import * as _ from 'underscore'
 
 import UploadedList from '../UploadedList/UploadedList'
 import './DropZone.scss'
 
 interface State {
-    files: FileList | null
+    files: File[] | null
 }
 
 export default class DropZone extends React.Component<{}, State> {
+    private fhirPath = 'FHIR'
+    private homePath = require('os').homedir()
     private inputElement: any
     public state: State
 
@@ -31,7 +36,11 @@ export default class DropZone extends React.Component<{}, State> {
                     onDrop={this.onDropFile}
                     onClick={this.onClickFile}
                 >
-                    <p>Drop your file or click here to browse your folders</p>
+                    <p>
+                        <strong>Drop your file</strong><br />
+                        or<br />
+                        <strong>click here to browse your folders</strong>
+                    </p>
                     <input
                         type="file"
                         multiple={true}
@@ -44,6 +53,52 @@ export default class DropZone extends React.Component<{}, State> {
         )
     }
 
+    componentWillMount () {
+        this.initFHIRWatching()
+    }
+
+    convertFilelistToArray (filelist: FileList | null) {
+        if (filelist) {
+            const convertedArray: File[] = []
+            Array.from(filelist).map((file: File, index: number) => {
+                convertedArray.push(file)
+            })
+            return convertedArray
+        } else {
+            return null
+        }
+    }
+
+    filterFiles (files: string[]) {
+        const promise = new Promise((resolve, reject) => {
+            const acceptedFiles = files.filter((file) => {
+                const extension = '.pdf'
+                const regex = new RegExp(extension + '$')
+                const stats = fs.statSync(file.indexOf('/FHIR') !== -1 ? file : `${this.homePath}/${this.fhirPath}/${file}`)
+                return regex.test(file) && stats.size <= 2000000
+            })
+            console.log(acceptedFiles)
+            if (acceptedFiles.length) {
+                const fileArray: File[] = []
+                _.each(acceptedFiles, (file) => {
+                    const f = new File([], file, {
+                        type: 'application/pdf'
+                    })
+                    fileArray.push(f)
+                })
+                this.uploadFiles(fileArray)
+            }
+            resolve(acceptedFiles)
+        })
+        return promise
+    }
+
+    initFHIRWatching () {
+        this.readInFHIRDirectory().then(() => {
+            this.watchFHIRDirectory()
+        })
+    }
+
     onClickFile ($event: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
         this.inputElement.current.click()
     }
@@ -54,17 +109,40 @@ export default class DropZone extends React.Component<{}, State> {
 
     onDropFile ($event: React.DragEvent<HTMLDivElement>): void {
         $event.preventDefault()
-        this.uploadFiles($event.dataTransfer.files)
+        this.uploadFiles(this.convertFilelistToArray($event.dataTransfer.files))
     }
 
     onFileChanged ($event: React.ChangeEvent<HTMLInputElement>) {
-        console.log($event.target.files)
-        this.uploadFiles($event.target.files)
+        this.uploadFiles(this.convertFilelistToArray($event.target.files))
     }
 
-    uploadFiles (files: FileList | null) {
-        if (files) {
+    readInFHIRDirectory () {
+        const promise = new Promise((resolve, reject) => {
+            fs.readdir(`${this.homePath}/${this.fhirPath}`, (err: any, files: string[]) => {
+                if (err) {
+                    alert(err)
+                    reject(err)
+                    return
+                }
+                this.filterFiles(files).then(() => {
+                    resolve('Reading FHIR directory : OK')
+                })
+            })
+        })
+        return promise
+    }
+
+    uploadFiles (files: File[] | null) {
+        if (files && files.length) {
             this.setState({ files })
         }
+    }
+
+    watchFHIRDirectory () {
+        chokidar.watch(`${this.homePath}/${this.fhirPath}`, {
+            persistent: true
+        }).on('change', (path: string) => {
+            this.filterFiles([path])
+        })
     }
 }

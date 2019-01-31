@@ -7,7 +7,7 @@ import './UploadedList.scss'
 const baseUrl = 'https://fhirtest.uhn.ca/baseDstu3/'
 
 interface Props {
-    list: FileList | null
+    list: File[] | null
 }
 
 interface State {
@@ -37,6 +37,14 @@ export default class UploadedList extends React.Component<Props, State> {
         }
     }
 
+    componentDidUpdate (prevProps: Props) {
+        if (this.props.list !== prevProps.list && this.props.list) {
+            _.each(this.props.list, (file: File, index: number) => {
+                this.uploadFile(file, index)
+            })
+        }
+    }
+
     getBinaryCount () {
         const promise = new Promise((resolve, reject) => {
             axios.get(`${baseUrl}Binary?_pretty=true&_summary=count`)
@@ -52,55 +60,41 @@ export default class UploadedList extends React.Component<Props, State> {
 
     render () {
         return (
-            <table className="uploadedlist">
-                <tbody>
-                    <tr>
-                        <th>Name</th>
-                        <th colSpan={2}>&nbsp;</th>
-                    </tr>
-                    {this.renderRow()}
-                    {this.renderRowBinaryCount()}
-                </tbody>
-            </table>
+            <div className="uploadedlist">
+                {this.renderRow()}
+                {this.renderRowBinaryCount()}
+            </div>
         )
     }
 
     renderRow () {
         if (this.props.list) {
-            return Array.from(this.props.list).map((file: File, index: number) => {
-                return <tr key={index}><td>{file.name}</td>{this.renderRowButton(file, index)}{this.renderRowStatus(index)}</tr>
+            return this.props.list.map((file: File, index: number) => {
+                return <div className="row" key={index}><p>{file.name}</p><p>{this.renderRowStatus(index)}</p></div>
             })
         } else {
-            return <tr><td colSpan={3}>No file</td></tr>
+            return <div className="row row-empty"><p>No file</p></div>
         }
     }
 
     renderRowBinaryCount () {
         if (this.state.binaryCount) {
             return (
-                <tr>
-                    <td colSpan={2}>Binaries currently on the server</td>
-                    <td>{this.state.binaryCount}</td>
-                </tr>
+                <div className="row row-end">
+                    <p>Binaries currently on the server</p>
+                    <p>
+                        <span>{this.state.binaryCount}</span>
+                    </p>
+                </div>
             )
-        } else {
-            return <tr><td colSpan={3}>&nbsp;</td></tr>
         }
-    }
-
-    renderRowButton (file: File, index: number) {
-        return (
-            <td>
-                <button onClick={() => this.uploadFile(file, index)} disabled={this.state.list[index].isSent}>Upload this file</button>
-            </td>
-        )
     }
 
     renderRowStatus (index: number) {
         return (
-            <td>
-                {this.state.list[index].isSent ? 'Uploaded' : 'Not uploaded'}
-            </td>
+            <span>
+                {this.state.list[index].isSent ? 'Uploaded' : 'In progress'}
+            </span>
         )
     }
 
