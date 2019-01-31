@@ -109,7 +109,7 @@ export default class UploadedList extends React.Component<Props, State> {
     }
 
     renderRowDelete (index: number) {
-        if (!this.state.list[index].deleted) {
+        if (!this.state.list[index].deleted && this.state.list[index].id) {
             return (
                 <button onClick={() => this.deleteBinary(index)}>Cancel</button>
             )

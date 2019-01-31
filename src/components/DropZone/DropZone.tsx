@@ -54,7 +54,9 @@ export default class DropZone extends React.Component<{}, State> {
     }
 
     componentWillMount () {
-        this.initFHIRWatching()
+        setTimeout(() => {
+            this.initFHIRWatching()
+        }, 3000)
     }
 
     convertFilelistToArray (filelist: FileList | null) {
@@ -80,7 +82,8 @@ export default class DropZone extends React.Component<{}, State> {
             if (acceptedFiles.length) {
                 const fileArray: File[] = []
                 _.each(acceptedFiles, (file) => {
-                    const f = new File([], file, {
+                    const data = fs.readFileSync(file.indexOf('/FHIR') !== -1 ? file : `${this.homePath}/${this.fhirPath}/${file}`, { encoding: 'utf-8' })
+                    const f = new File([data], file, {
                         type: 'application/pdf'
                     })
                     fileArray.push(f)

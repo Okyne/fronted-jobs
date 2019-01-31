@@ -14,6 +14,10 @@
         p {
             line-height: 20px;
 
+            &:first-child {
+                width: 250px;
+            }
+
             + p {
                 color: #f75e36;
                 font-size: 0.8rem;
