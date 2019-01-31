@@ -54,9 +54,7 @@ export default class DropZone extends React.Component<{}, State> {
     }
 
     componentWillMount () {
-        setTimeout(() => {
-            this.initFHIRWatching()
-        }, 3000)
+        this.initFHIRWatching()
     }
 
     convertFilelistToArray (filelist: FileList | null) {
